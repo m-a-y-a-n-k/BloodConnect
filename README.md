@@ -8,6 +8,6 @@
                                                       
                                                       	HOME PAGE
                                                       
-                                    ![Homepage](/blood_bank/images/Homepage.png?raw=true "HOMEPAGE")
+          ![Homepage](https://raw.github.com/m-a-y-a-n-k/BloodConnect/blood_bank/images/Homepage.png?raw=true "HOMEPAGE")
         
                                                       
