@@ -271,7 +271,7 @@
 			$donor_email = mysql_prep($_POST['donor_email']);
 			$donor_age = intval(mysql_prep($_POST['donor_age']));
 			$donor_gender = mysql_prep($_POST['donor_gender']);
-			$donor_contact = intval(mysql_prep($_POST['donor_contact']));
+			$donor_contact = mysql_prep($_POST['donor_contact']);
 			$donor_city = mysql_prep($_POST['donor_city']);
 			$donor_country = mysql_prep($_POST['donor_country']);
 			$donor_type = mysql_prep($_POST['donor_type']);
@@ -282,7 +282,7 @@
 			$query = "INSERT INTO donors (
 						name, email, age, gender, contact, city, country, type,sign,expiration
 					) VALUES (
-						'{$donor_name}', '{$donor_email}', {$donor_age}, '{$donor_gender}', {$donor_contact}, '{$donor_city}', '{$donor_country}', '{$donor_type}', '{$donor_sign}', {$expiration_time}
+						'{$donor_name}', '{$donor_email}', {$donor_age}, '{$donor_gender}', '{$donor_contact}', '{$donor_city}', '{$donor_country}', '{$donor_type}', '{$donor_sign}', {$expiration_time}
 					)";
 			if ($result = mysqli_query($connection,$query)) {
 				// as is, $message will still be discarded on the redirect
