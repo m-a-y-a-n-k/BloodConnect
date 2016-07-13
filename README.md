@@ -8,6 +8,6 @@
                                                       
                                                       	HOME PAGE
                                                       
-      https://cloud.githubusercontent.com/assets/10991741/16805657/db24ee0c-492e-11e6-8521-cfc6c442a6f6.png
+                                    ![Homepage](/blood_bank/images/Homepage.png?raw=true "HOMEPAGE")
         
                                                       
