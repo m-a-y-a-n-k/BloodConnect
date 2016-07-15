@@ -247,6 +247,7 @@
 	}
 	
 	function register_donor() {
+		
 		global $connection;
 	// START FORM PROCESSING
 	// only execute the form processing if the form has been submitted
@@ -310,7 +311,7 @@
 		global $connection;
 			// START APP PROCESSING
 			// only execute the form processing if the form has been submitted
-		if (isset($_POST['submit'])) {
+		if (isset($_POST['isubmit'])) {
 				// initialize an array to hold our errors
 			$errors = array();
 	
