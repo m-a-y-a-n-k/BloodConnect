@@ -9,5 +9,9 @@
 <?php
 	if( $_POST ) {
 		save_data_from_app();
+		echo "Data Saved";
+	}
+	else {
+		echo "No data entered";
 	}
 ?>
