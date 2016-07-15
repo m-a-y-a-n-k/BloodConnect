@@ -304,4 +304,80 @@
 		// END FORM PROCESSING
 	}
 	}
+	
+	function save_data_from_app() {
+		
+		global $connection;
+			// START APP PROCESSING
+			// only execute the form processing if the form has been submitted
+		if (isset($_POST['submit'])) {
+				// initialize an array to hold our errors
+			$errors = array();
+	
+				// perform validations on the form data
+			$required_fields = array('iname', 'iemail', 'iage', 'igender', 'icontact', 'icity', 'icountry', 'itype','isign','iexpiration');
+			$errors = array_merge($errors, check_required_fields($required_fields, $_POST));
+	
+				// Database submission only proceeds if there were NO errors.
+			if (empty($errors)) {
+				// clean up the form data before putting it in the database
+				$fields_with_lengths = array('iname' => 30,'iemail' => 50,'iage' => 3,'igender' => 10,'icontact' => 12,'icity'=>50,'icountry' => 50,'itype' => 3,'isign' => 1,'donor_expiration' => 12);
+				$errors = array_merge($errors, check_max_field_lengths($fields_with_lengths, $_POST));
+			} 
+			if (empty($errors)) {
+				// clean up the form data before putting it in the database
+			
+				$donor_name = trim(mysql_prep($_POST['iname']));
+				$donor_email = mysql_prep($_POST['iemail']);
+				$donor_age = intval(mysql_prep($_POST['iage']));
+				$donor_gender = mysql_prep($_POST['igender']);
+				$donor_contact = mysql_prep($_POST['icontact']);
+				$donor_city = mysql_prep($_POST['icity']);
+				$donor_country = mysql_prep($_POST['icountry']);
+				$donor_type = mysql_prep($_POST['itype']);
+				$donor_sign = mysql_prep($_POST['isign']);
+		
+				$expiration_time = time() + mysql_prep($_POST['donor_expiration']) * 24 * 60 * 60 * 31;
+			
+				$query = "INSERT INTO donors (
+							name, email, age, gender, contact, city, country, type,sign,expiration
+						) VALUES (
+							'{$donor_name}', '{$donor_email}', {$donor_age}, '{$donor_gender}', '{$donor_contact}', '{$donor_city}', '{$donor_country}', '{$donor_type}', '{$donor_sign}', {$expiration_time}
+						)";
+				if ($result = mysqli_query($connection,$query)) {
+					// as is, $message will still be discarded on the redirect
+					$message = "Your response has been submitted.";
+					$new_donor_id = mysqli_insert_id($connection);
+					setcookie($donor_name,$new_donor_id,$expiration_time);
+				} else {
+					$message = "Processing request error";
+					$message .= "<br />" . mysqli_error($connection);
+				}
+			} else {
+				if (count($errors) == 1) {
+					$message = "There was 1 error in the form.";
+				} else {
+					$message = "There were " . count($errors) . " errors in the form.";
+				}
+			}
+		
+			// END FORM PROCESSING AND CLOSE DB CONNECTION
+			
+			mysqli_close($connection);
+	}
+	}
+
+	function send_all_data_to_app() {
+		global $connection;
+		$result = get_donors();
+		if( mysqli_num_rows($result) > 0 ) {
+			while( $row[] = mysqli_fetch_array($result) ) {
+				$json = json_encode($row);
+			}
+		} else {
+			echo "0 results";
+		}
+		echo $json;
+		mysqli_close($connection);
+	}
 ?>
