@@ -371,6 +371,7 @@
 	function send_all_data_to_app() {
 		global $connection;
 		$result = get_donors();
+		$json = "";
 		if( mysqli_num_rows($result) > 0 ) {
 			while( $row[] = mysqli_fetch_array($result) ) {
 				$json = json_encode($row);
