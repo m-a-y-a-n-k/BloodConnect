@@ -237,9 +237,9 @@
 		$all_donors_set = get_donors();
 		
 		while( $donor_row = mysqli_fetch_array($all_donors_set) ) {
-			if( !isset($_COOKIE[$donor_row['name']]) ){
+			if( !isset($_COOKIE[$donor_row['email']]) ){
 				// delete cookie from database
-				$query = "DELETE FROM donors WHERE id = {$_COOKIE[$donor_row['name']]}";
+				$query = "DELETE FROM donors WHERE id = {$_COOKIE[$donor_row['email']]}";
 				$result_set = mysqli_query($connection,$query);
 				confirm_query($result_set);
 			}
@@ -289,7 +289,7 @@
 				// as is, $message will still be discarded on the redirect
 				$message = "Your response has been submitted.";
 				$new_donor_id = mysqli_insert_id($connection);
-				setcookie($donor_name,$new_donor_id,$expiration_time);
+				setcookie($donor_email,$new_donor_id,$expiration_time);
 			} else {
 				$message = "Processing request error";
 				$message .= "<br />" . mysqli_error($connection);
