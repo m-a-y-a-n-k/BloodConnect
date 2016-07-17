@@ -5,6 +5,7 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -27,6 +28,7 @@ public class RegisterUserClass {
         String response = "";
         HttpURLConnection conn=null;
         BufferedWriter writer=null;
+        BufferedReader reader =null;
         try {
             url = new URL(requestURL);
 
@@ -40,13 +42,27 @@ public class RegisterUserClass {
             writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
             writer.write(getPostDataString(postDataParams));
-
+            writer.flush();
+            writer.close();
             os.close();
             int responseCode=conn.getResponseCode();
 
             if (responseCode == HttpsURLConnection.HTTP_OK) {
-                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                response = br.readLine();
+                InputStream inputStream = conn.getInputStream();
+                StringBuilder buffer = new StringBuilder();
+                if (inputStream == null) {
+                    // Nothing to do.
+                    Log.v(MyUtils.TAG, "inputstream null");
+                    return null;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // buffer for debugging.
+                    buffer.append(line).append("\n");
+                    response=buffer.toString();
+                }
             }
             else {
                 response="Error Registering";
@@ -58,14 +74,13 @@ public class RegisterUserClass {
         finally {
             if(conn!=null)
                 conn.disconnect();
-            if(writer!=null)
+            if(reader!=null)
             {
                 try{
-                    writer.flush();
-                    writer.close();
+                    reader.close();
                 }catch (IOException e)
                 {
-                    Log.e(MyUtils.TAG, "Error closing write stream: "+e.getMessage());
+                    Log.e(MyUtils.TAG, "Error closing input stream: "+e.getMessage());
                 }
             }
         }
