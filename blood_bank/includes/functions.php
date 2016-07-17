@@ -285,7 +285,7 @@
 			$donor_type = mysql_prep($_POST['donor_type']);
 			$donor_sign = mysql_prep($_POST['donor_sign']);
 		
-			$expiration_time = time() + 60;//intval(mysql_prep($_POST['donor_expiration'])) * 24 * 60 * 60 * 31;
+			$expiration_time = time() + intval(mysql_prep($_POST['donor_expiration'])) * 24 * 60 * 60 * 31;
 			
 			$query = "INSERT INTO donors (
 						name, email, age, gender, contact, city, country, type,sign,expiration
@@ -321,10 +321,14 @@
 		global $connection;
 			// START APP PROCESSING
 			// only execute the form processing if the form has been submitted
-		if (isset($_POST['isubmit'])) {
+		if (intval($_POST['isubmit'])==1) {
 				// initialize an array to hold our errors
 			$errors = array();
-	
+			if(intval($_POST['isign'])==1){
+				$_POST['isign']='+';
+			} else {
+				$_POST['isign']='-';
+			}
 				// perform validations on the form data
 			$required_fields = array('iname', 'iemail', 'iage', 'igender', 'icontact', 'icity', 'icountry', 'itype','isign','iexpiration');
 			$errors = array_merge($errors, check_required_fields($required_fields, $_POST));
@@ -373,8 +377,8 @@
 			}
 		
 			// END FORM PROCESSING AND CLOSE DB CONNECTION
-			
 			mysqli_close($connection);
+			return $message;
 	}
 	}
 
