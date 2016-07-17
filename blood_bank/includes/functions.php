@@ -237,11 +237,18 @@
 		$all_donors_set = get_donors();
 		
 		while( $donor_row = mysqli_fetch_array($all_donors_set) ) {
-			if( !isset($_COOKIE[$donor_row['email']]) ){
-				// delete cookie from database
-				$query = "DELETE FROM donors WHERE id = {$_COOKIE[$donor_row['email']]}";
-				$result_set = mysqli_query($connection,$query);
-				confirm_query($result_set);
+			
+			if( isset($_COOKIE[$donor_row['email']]) ){
+				$cookie = json_decode($_COOKIE[$donor_row['email']]);
+				$expiry = $cookie->expiry;
+				$idd = $cookie->data->id;
+				if( time() + 60 > $expiry ) {
+					
+					$query = "DELETE FROM donors WHERE id = {$idd}";
+					$result_set = mysqli_query($connection,$query);
+					confirm_query($result_set);
+				}
+				
 			}
 		}
 	}
@@ -278,7 +285,7 @@
 			$donor_type = mysql_prep($_POST['donor_type']);
 			$donor_sign = mysql_prep($_POST['donor_sign']);
 		
-			$expiration_time = time() + mysql_prep($_POST['donor_expiration']) * 24 * 60 * 60 * 31;
+			$expiration_time = time() + 60;//intval(mysql_prep($_POST['donor_expiration'])) * 24 * 60 * 60 * 31;
 			
 			$query = "INSERT INTO donors (
 						name, email, age, gender, contact, city, country, type,sign,expiration
@@ -289,7 +296,10 @@
 				// as is, $message will still be discarded on the redirect
 				$message = "Your response has been submitted.";
 				$new_donor_id = mysqli_insert_id($connection);
-				setcookie($donor_email,$new_donor_id,$expiration_time);
+				$data = (object) array( "id" => "{$new_donor_id}","email" => "{$donor_email}", "name" => "{$donor_name}" );
+				$cookieData = (object) array( "data" => $data, "expiry" => $expiration_time );
+				setcookie($donor_email,json_encode($cookieData),$expiration_time);
+				
 			} else {
 				$message = "Processing request error";
 				$message .= "<br />" . mysqli_error($connection);
@@ -322,7 +332,7 @@
 				// Database submission only proceeds if there were NO errors.
 			if (empty($errors)) {
 				// clean up the form data before putting it in the database
-				$fields_with_lengths = array('iname' => 30,'iemail' => 50,'iage' => 3,'igender' => 10,'icontact' => 12,'icity'=>50,'icountry' => 50,'itype' => 3,'isign' => 1,'donor_expiration' => 12);
+				$fields_with_lengths = array('iname' => 30,'iemail' => 50,'iage' => 3,'igender' => 10,'icontact' => 12,'icity'=>50,'icountry' => 50,'itype' => 3,'isign' => 1,'iexpiration' => 12);
 				$errors = array_merge($errors, check_max_field_lengths($fields_with_lengths, $_POST));
 			} 
 			if (empty($errors)) {
@@ -338,7 +348,7 @@
 				$donor_type = mysql_prep($_POST['itype']);
 				$donor_sign = mysql_prep($_POST['isign']);
 		
-				$expiration_time = time() + mysql_prep($_POST['donor_expiration']) * 24 * 60 * 60 * 31;
+				$expiration_time = time() + intval(mysql_prep($_POST['iexpiration'])) * 24 * 60 * 60 * 31;
 			
 				$query = "INSERT INTO donors (
 							name, email, age, gender, contact, city, country, type,sign,expiration
