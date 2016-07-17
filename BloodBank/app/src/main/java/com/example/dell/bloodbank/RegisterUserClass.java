@@ -69,7 +69,7 @@ public class RegisterUserClass {
                 }
             }
         }
-
+        Log.v(MyUtils.TAG,response);
         return response;
     }
 

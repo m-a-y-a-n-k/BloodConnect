@@ -150,7 +150,7 @@ public class DonorListFragment extends Fragment {
             BufferedReader reader = null;
             String donorJsonString = null;//"[{\"0\":\"10\",\"id\":\"10\",\"1\":\"Divya\",\"name\":\"Divya\",\"2\":\"divyanarula87@gmail.com\",\"email\":\"divyanarula87@gmail.com\",\"3\":\"29\",\"age\":\"29\",\"4\":\"Female\",\"gender\":\"Female\",\"5\":\"9900414342\",\"contact\":\"9900414342\",\"6\":\"Delhi\",\"city\":\"Delhi\",\"7\":\"India\",\"country\":\"India\",\"8\":\"B\",\"type\":\"B\",\"9\":\"+\",\"sign\":\"+\",\"10\":\"1484642107\",\"expiration\":\"1484642107\"},{\"0\":\"9\",\"id\":\"9\",\"1\":\"Mayank\",\"name\":\"Mayank\",\"2\":\"mayanknarula96@gmail.com\",\"email\":\"mayanknarula96@gmail.com\",\"3\":\"20\",\"age\":\"20\",\"4\":\"Male\",\"gender\":\"Male\",\"5\":\"9582324159\",\"contact\":\"9582324159\",\"6\":\"Delhi\",\"city\":\"Delhi\",\"7\":\"India\",\"country\":\"India\",\"8\":\"AB\",\"type\":\"AB\",\"9\":\"+\",\"sign\":\"+\",\"10\":\"1500712423\",\"expiration\":\"1500712423\"}]";
             try {
-                String u="http://local-ip-address/BloodConnect/blood_bank/appdata_sender.php";
+                String u="http://192.168.0.4:80/BloodConnect/blood_bank/appdata_sender.php";
                 URL url = new URL(u);
 
                 urlConnection = (HttpURLConnection) url.openConnection();

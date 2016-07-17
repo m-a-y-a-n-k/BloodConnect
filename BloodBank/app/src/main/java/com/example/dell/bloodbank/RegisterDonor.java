@@ -19,7 +19,7 @@ public class RegisterDonor extends Fragment {
 
 
     //Enter url here
-    private static final String REGISTER_URL = "http://local-ip-address/BloodConnect/blood_bank/appdata_reciever.php";
+    private static final String REGISTER_URL = "http://192.168.0.4:80/BloodConnect/blood_bank/appdata_reciever.php";
     EditText eName, eAge, eEmail, eCountry, eCity, eContact ;
     Spinner eType, eGender, eExp;
     Button register;
