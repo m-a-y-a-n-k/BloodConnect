@@ -19,15 +19,14 @@ public class RegisterDonor extends Fragment {
 
 
     //Enter url here
-    private static final String REGISTER_URL = "Enter URL here";
-    public RegisterDonor() {
-        // Required empty public constructor
-    }
-
+    private static final String REGISTER_URL = "http://192.168.0.4:80/BloodConnect/blood_bank/appdata_reciever.php";
     EditText eName, eAge, eEmail, eCountry, eCity, eContact ;
     Spinner eType, eGender, eExp;
     Button register;
     String name, email, country, city, contact, type, sign, s, gender, exp, age;
+    public RegisterDonor() {
+        // Required empty public constructor
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -116,7 +115,10 @@ public class RegisterDonor extends Fragment {
                 data.put("igender", gender);
                 data.put("iage", age);
                 data.put("itype", type);
-                data.put("isign", sign);
+                if(sign == "+")
+                    data.put("isign", "1");
+                else
+                    data.put("isign","0");
                 data.put("iexpiration", exp);
                 data.put("isubmit", "1");
 
@@ -130,6 +132,6 @@ public class RegisterDonor extends Fragment {
             }
         }
         RegisterAsyncTask ru=new RegisterAsyncTask();
-    //    ru.execute();
+        ru.execute();
     }
 }

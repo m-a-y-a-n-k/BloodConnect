@@ -1,8 +1,5 @@
 package com.example.dell.bloodbank;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,11 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -95,83 +89,6 @@ public class DonorListFragment extends Fragment {
         donorsTask.execute();
     }
 
-    public class FetchDonorsTask extends AsyncTask<Void, Void, ArrayList<MyDonors>> {
-
-        @Override
-        protected void onPostExecute(ArrayList<MyDonors> donors) {
-            if (donors != null) {
-                donorList.clear();
-                for (MyDonors o : donors) {
-                    Log.v(getTAG(), o.getBloodGroup());
-                    if(o.getBloodGroup().equals(type))
-                        donorList.add(o);
-                    Log.v(getTAG(), o.getName());
-                }
-                donorCustomAdapter.notifyDataSetChanged();
-            }
-        }
-
-        @Override
-        protected ArrayList<MyDonors> doInBackground(Void... params) {
-
-            HttpURLConnection urlConnection = null;
-            BufferedReader reader = null;
-            String donorJsonString = "[{\"0\":\"10\",\"id\":\"10\",\"1\":\"Divya\",\"name\":\"Divya\",\"2\":\"divyanarula87@gmail.com\",\"email\":\"divyanarula87@gmail.com\",\"3\":\"29\",\"age\":\"29\",\"4\":\"Female\",\"gender\":\"Female\",\"5\":\"9900414342\",\"contact\":\"9900414342\",\"6\":\"Delhi\",\"city\":\"Delhi\",\"7\":\"India\",\"country\":\"India\",\"8\":\"B\",\"type\":\"B\",\"9\":\"+\",\"sign\":\"+\",\"10\":\"1484642107\",\"expiration\":\"1484642107\"},{\"0\":\"9\",\"id\":\"9\",\"1\":\"Mayank\",\"name\":\"Mayank\",\"2\":\"mayanknarula96@gmail.com\",\"email\":\"mayanknarula96@gmail.com\",\"3\":\"20\",\"age\":\"20\",\"4\":\"Male\",\"gender\":\"Male\",\"5\":\"9582324159\",\"contact\":\"9582324159\",\"6\":\"Delhi\",\"city\":\"Delhi\",\"7\":\"India\",\"country\":\"India\",\"8\":\"AB\",\"type\":\"AB\",\"9\":\"+\",\"sign\":\"+\",\"10\":\"1500712423\",\"expiration\":\"1500712423\"}]";
-            try {
-                /*String u=null;
-                URL url = new URL(u);
-
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.connect();
-
-                InputStream inputStream = urlConnection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
-                if (inputStream == null) {
-                    // Nothing to do.
-                    Log.v(getTAG(), "inputstream null");
-                    return null;
-                }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                    // But it does make debugging a *lot* easier if you print out the completed
-                    // buffer for debugging.
-                    buffer.append(line + "\n");
-                }
-
-                if (buffer.length() == 0) {
-                    // Stream was empty.  No point in parsing.
-                    Log.v(MyUtils.TAG, "Stream empty while fetching data");
-                    return null;
-                }
-                donorJsonString= buffer.toString();*/
-                Log.v(getTAG(), donorJsonString);
-
-            } catch (Exception e) {
-                Log.e(getTAG(), "Error getting data!!!!!: " + e.getMessage());
-            } finally {
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
-                }
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (final IOException e) {
-                        Log.e(getTAG(), "Error closing stream", e);
-                    }
-                }
-            }
-            try {
-                return getDonorDataFromJson(donorJsonString);
-            } catch (JSONException e) {
-                Log.e(getTAG(), "Error parsing JSON: " + e.getMessage());
-            }
-            return null;
-        }
-    }
     private String getTAG()
     {
         return MyUtils.TAG;
@@ -208,5 +125,83 @@ public class DonorListFragment extends Fragment {
             donors.add(donor);
         }
         return donors;
+    }
+
+    public class FetchDonorsTask extends AsyncTask<Void, Void, ArrayList<MyDonors>> {
+
+        @Override
+        protected void onPostExecute(ArrayList<MyDonors> donors) {
+            if (donors != null) {
+                donorList.clear();
+                for (MyDonors o : donors) {
+                    Log.v(getTAG(), o.getBloodGroup());
+                    if(o.getBloodGroup().equals(type))
+                        donorList.add(o);
+                    Log.v(getTAG(), o.getName());
+                }
+                donorCustomAdapter.notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        protected ArrayList<MyDonors> doInBackground(Void... params) {
+
+            HttpURLConnection urlConnection = null;
+            BufferedReader reader = null;
+            String donorJsonString = null;
+            try {
+                String u="http://[ipV4-address]:[port-number]/BloodConnect/blood_bank/appdata_sender.php";
+                URL url = new URL(u);
+
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                if (inputStream == null) {
+                    // Nothing to do.
+                    Log.v(getTAG(), "inputstream null");
+                    return null;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                    // But it does make debugging a *lot* easier if you print out the completed
+                    // buffer for debugging.
+                    buffer.append(line + "\n");
+                }
+
+                if (buffer.length() == 0) {
+                    // Stream was empty.  No point in parsing.
+                    Log.v(MyUtils.TAG, "Stream empty while fetching data");
+                    return null;
+                }
+                donorJsonString= buffer.toString();
+                Log.v(getTAG(), donorJsonString);
+
+            } catch (Exception e) {
+                Log.e(getTAG(), "Error getting data!!!!!: " + e.getMessage());
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e(getTAG(), "Error closing stream", e);
+                    }
+                }
+            }
+            try {
+                return getDonorDataFromJson(donorJsonString);
+            } catch (JSONException e) {
+                Log.e(getTAG(), "Error parsing JSON: " + e.getMessage());
+            }
+            return null;
+        }
     }
 }

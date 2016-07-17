@@ -10,4 +10,12 @@
                                                       
           ![Homepage](https://raw.github.com/m-a-y-a-n-k/BloodConnect/blood_bank/images/Homepage.png?raw=true "HOMEPAGE")
         
-                                                      
+                                                     
+                                                     
+                                                     
+                                                     
+                                                     UPDATE:
+                                                     
+                          THE ANDROID APP "BloodBank" IS COMPLETE AND RUNS ON EMULATOR VIA COMPUTER'S LOCAL IPV4 ADDRESS....
+                          
+                          

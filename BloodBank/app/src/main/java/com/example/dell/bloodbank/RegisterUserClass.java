@@ -1,11 +1,11 @@
 package com.example.dell.bloodbank;
 
+import java.util.HashMap;
+
 import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -13,11 +13,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
-
 
 public class RegisterUserClass {
 
@@ -28,61 +26,40 @@ public class RegisterUserClass {
         String response = "";
         HttpURLConnection conn=null;
         BufferedWriter writer=null;
-        BufferedReader reader =null;
+
         try {
             url = new URL(requestURL);
 
             conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
             conn.setRequestMethod("POST");
             conn.setDoInput(true);
             conn.setDoOutput(true);
-
 
             OutputStream os = conn.getOutputStream();
             writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
             writer.write(getPostDataString(postDataParams));
+
             writer.flush();
             writer.close();
             os.close();
             int responseCode=conn.getResponseCode();
 
             if (responseCode == HttpsURLConnection.HTTP_OK) {
-                InputStream inputStream = conn.getInputStream();
-                StringBuilder buffer = new StringBuilder();
-                if (inputStream == null) {
-                    // Nothing to do.
-                    Log.v(MyUtils.TAG, "inputstream null");
-                    return null;
-                }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-
                 String line;
-                while ((line = reader.readLine()) != null) {
-                    // buffer for debugging.
-                    buffer.append(line).append("\n");
-                    response=buffer.toString();
+                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                while ((line=br.readLine()) != null) {
+                    response+=line;
                 }
             }
             else {
-                response="Error Registering";
+                response="";
+
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e(MyUtils.TAG, "Error posting data!!!: "+e.getMessage());
-        }
-        finally {
-            if(conn!=null)
-                conn.disconnect();
-            if(reader!=null)
-            {
-                try{
-                    reader.close();
-                }catch (IOException e)
-                {
-                    Log.e(MyUtils.TAG, "Error closing input stream: "+e.getMessage());
-                }
-            }
         }
 
         return response;
