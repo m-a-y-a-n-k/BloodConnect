@@ -10,4 +10,12 @@
                                                       
           ![Homepage](https://raw.github.com/m-a-y-a-n-k/BloodConnect/blood_bank/images/Homepage.png?raw=true "HOMEPAGE")
         
-                                                      
+                                                     
+                                                     
+                                                     
+                                                     
+                                                     UPDATE:
+                                                     
+                          OUR ANDROID APP IS COMPLETE AND RUNS ON EMULATOR VIA COMPUTER'S LOCALHOST....
+                          
+                          
