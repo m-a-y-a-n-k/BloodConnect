@@ -231,27 +231,6 @@
 		$output .= "</ul>";
 		return $output;
 	}
-
-	function remove_expired_donors() {
-		global $connection;
-		$all_donors_set = get_donors();
-		
-		while( $donor_row = mysqli_fetch_array($all_donors_set) ) {
-			
-			if( isset($_COOKIE[$donor_row['email']]) ){
-				$cookie = json_decode($_COOKIE[$donor_row['email']]);
-				$expiry = $cookie->expiry;
-				$idd = $cookie->data->id;
-				if( time() + 60 > $expiry ) {
-					
-					$query = "DELETE FROM donors WHERE id = {$idd}";
-					$result_set = mysqli_query($connection,$query);
-					confirm_query($result_set);
-				}
-				
-			}
-		}
-	}
 	
 	function register_donor() {
 		
@@ -284,9 +263,8 @@
 			$donor_country = mysql_prep($_POST['donor_country']);
 			$donor_type = mysql_prep($_POST['donor_type']);
 			$donor_sign = mysql_prep($_POST['donor_sign']);
-		
-			$expiration_time = time() + intval(mysql_prep($_POST['donor_expiration'])) * 24 * 60 * 60 * 31;
-			
+			$interval = intval(mysql_prep($_POST['donor_expiration'])) * 24 * 60 * 60 * 31 * 10000000;
+			$expiration_time = time() + $interval;
 			$query = "INSERT INTO donors (
 						name, email, age, gender, contact, city, country, type,sign,expiration
 					) VALUES (
