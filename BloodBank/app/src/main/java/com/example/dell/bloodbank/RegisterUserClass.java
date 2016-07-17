@@ -1,7 +1,10 @@
 package com.example.dell.bloodbank;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -14,9 +17,7 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-/**
- * Created by dell on 7/16/2016.
- */
+
 public class RegisterUserClass {
 
     public String sendPostRequest(String requestURL,
@@ -24,24 +25,22 @@ public class RegisterUserClass {
 
         URL url;
         String response = "";
+        HttpURLConnection conn=null;
+        BufferedWriter writer=null;
         try {
             url = new URL(requestURL);
 
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(15000);
-            conn.setConnectTimeout(15000);
+            conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoInput(true);
             conn.setDoOutput(true);
 
 
             OutputStream os = conn.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(
+            writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
             writer.write(getPostDataString(postDataParams));
 
-            writer.flush();
-            writer.close();
             os.close();
             int responseCode=conn.getResponseCode();
 
@@ -54,6 +53,21 @@ public class RegisterUserClass {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e(MyUtils.TAG, "Error posting data!!!: "+e.getMessage());
+        }
+        finally {
+            if(conn!=null)
+                conn.disconnect();
+            if(writer!=null)
+            {
+                try{
+                    writer.flush();
+                    writer.close();
+                }catch (IOException e)
+                {
+                    Log.e(MyUtils.TAG, "Error closing write stream: "+e.getMessage());
+                }
+            }
         }
 
         return response;
@@ -72,7 +86,7 @@ public class RegisterUserClass {
             result.append("=");
             result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
         }
-
+        Log.v(MyUtils.TAG, result.toString());
         return result.toString();
     }
 }
