@@ -31,7 +31,6 @@
 									<?php echo htmlentities(strip_tags(nl2br($sel_page['content']),"<b><br><p><a>")); ?>
 									<br />
 									<?php
-										remove_expired_donors();
 										echo display_page_content($sel_page);
 									?>
 									<?php
@@ -56,5 +55,8 @@
 					</td>
 				</tr>
 			</table>
-<?php require_once("includes/footer.php"); ?>
+<?php 
+	remove_expired_donors();
+	require_once("includes/footer.php"); 
+?>
 
