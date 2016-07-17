@@ -19,15 +19,14 @@ public class RegisterDonor extends Fragment {
 
 
     //Enter url here
-    private static final String REGISTER_URL = "Enter URL here";
-    public RegisterDonor() {
-        // Required empty public constructor
-    }
-
+    private static final String REGISTER_URL = "http://192.168.0.4/BloodConnect/blood_bank/appdata_reciever.php";
     EditText eName, eAge, eEmail, eCountry, eCity, eContact ;
     Spinner eType, eGender, eExp;
     Button register;
     String name, email, country, city, contact, type, sign, s, gender, exp, age;
+    public RegisterDonor() {
+        // Required empty public constructor
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
