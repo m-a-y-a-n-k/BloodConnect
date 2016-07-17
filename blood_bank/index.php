@@ -56,7 +56,6 @@
 				</tr>
 			</table>
 <?php 
-	remove_expired_donors();
 	require_once("includes/footer.php"); 
 ?>
 
