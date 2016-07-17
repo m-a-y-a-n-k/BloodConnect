@@ -27,49 +27,42 @@ public class RegisterUserClass {
         String response = "";
         HttpURLConnection conn=null;
         BufferedWriter writer=null;
+
         try {
             url = new URL(requestURL);
 
             conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
             conn.setRequestMethod("POST");
             conn.setDoInput(true);
             conn.setDoOutput(true);
-
 
             OutputStream os = conn.getOutputStream();
             writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
             writer.write(getPostDataString(postDataParams));
 
+            writer.flush();
+            writer.close();
             os.close();
             int responseCode=conn.getResponseCode();
 
             if (responseCode == HttpsURLConnection.HTTP_OK) {
+                String line;
                 BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                response = br.readLine();
+                while ((line=br.readLine()) != null) {
+                    response+=line;
+                }
             }
             else {
-                response="Error Registering";
+                response="";
+
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e(MyUtils.TAG, "Error posting data!!!: "+e.getMessage());
         }
-        finally {
-            if(conn!=null)
-                conn.disconnect();
-            if(writer!=null)
-            {
-                try{
-                    writer.flush();
-                    writer.close();
-                }catch (IOException e)
-                {
-                    Log.e(MyUtils.TAG, "Error closing write stream: "+e.getMessage());
-                }
-            }
-        }
-        Log.v(MyUtils.TAG,response);
+
         return response;
     }
 

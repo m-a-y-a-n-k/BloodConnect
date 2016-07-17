@@ -115,7 +115,10 @@ public class RegisterDonor extends Fragment {
                 data.put("igender", gender);
                 data.put("iage", age);
                 data.put("itype", type);
-                data.put("isign", sign);
+                if(sign == "+")
+                    data.put("isign", "1");
+                else
+                    data.put("isign","0");
                 data.put("iexpiration", exp);
                 data.put("isubmit", "1");
 
