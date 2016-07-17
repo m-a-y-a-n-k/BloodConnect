@@ -129,6 +129,6 @@ public class RegisterDonor extends Fragment {
             }
         }
         RegisterAsyncTask ru=new RegisterAsyncTask();
-    //    ru.execute();
+        ru.execute();
     }
 }
