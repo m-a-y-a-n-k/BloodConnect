@@ -1,5 +1,7 @@
 package com.example.dell.bloodbank;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,8 @@ public class RegisterDonor extends Fragment {
 
 
     //Enter url here
+    private static final String KEY_NAME="userdetails.UserName",
+            KEY_EMAIL="userdetails.UserEmail", NULL_VALUE="userdetails.nullValue";
     private static final String REGISTER_URL = "http://[ipV4-address]:[port-number]/BloodConnect/blood_bank/appdata_reciever.php";
     EditText eName, eAge, eEmail, eCountry, eCity, eContact ;
     Spinner eType, eGender, eExp;
@@ -34,6 +38,7 @@ public class RegisterDonor extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_register_donor, container, false);
 
+        setRetainInstance(true);
         eName = (EditText)v.findViewById(R.id.register_name);
         eAge=(EditText)v.findViewById(R.id.register_age);
         eEmail=(EditText)v.findViewById(R.id.register_email);
@@ -51,9 +56,24 @@ public class RegisterDonor extends Fragment {
             }
         });
 
+        getFromSharedPrefs();
         return v;
     }
 
+    public void getFromSharedPrefs()
+    {
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(
+                getString(R.string.preference_user_key), Context.MODE_PRIVATE);
+
+        name=sharedPref.getString(KEY_NAME, NULL_VALUE);
+        if(!(name.equals(NULL_VALUE)))
+            eName.setText(name);
+
+        email=sharedPref.getString(KEY_EMAIL, NULL_VALUE);
+        if(!(email.equals(NULL_VALUE)))
+            eEmail.setText(email);
+
+    }
     private void registerUser()
     {
         name=eName.getText().toString();
@@ -132,6 +152,11 @@ public class RegisterDonor extends Fragment {
             }
         }
         RegisterAsyncTask ru=new RegisterAsyncTask();
-        ru.execute();
+//        ru.execute();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }

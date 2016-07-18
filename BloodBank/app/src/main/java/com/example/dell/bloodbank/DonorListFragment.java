@@ -66,14 +66,11 @@ public class DonorListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_my_tab, container, false);
         type=getArguments().getString(ARG_SECTION_NUMBER);
-        Log.v(getTAG(), "onCreateView"+type);
-        Log.v(getTAG(), "onCreateView1");
+        Log.v(getTAG(), "onCreateView "+type);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Blood Donors");
 
         LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        Log.v(getTAG(), "onCreateView");
         recyclerView=(RecyclerView)rootView.findViewById(R.id.DonorList);
-        Log.v(getTAG(), "onCreateView");
         recyclerView.setLayoutManager(layoutManager);
 
         getData();
@@ -86,7 +83,7 @@ public class DonorListFragment extends Fragment {
 
     public void getData() {
         FetchDonorsTask donorsTask = new FetchDonorsTask();
-        donorsTask.execute();
+        //donorsTask.execute();
     }
 
     private String getTAG()

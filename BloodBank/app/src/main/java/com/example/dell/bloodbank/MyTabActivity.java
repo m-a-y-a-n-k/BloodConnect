@@ -30,18 +30,14 @@ public class MyTabActivity extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
-        Log.v(MyUtils.TAG, "MyTabActivity");
         View view = inflater.inflate(R.layout.activity_my_tab, container, false);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
 
-        Log.v(MyUtils.TAG, "MyTabActivity");
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getActivity().getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-
-        Log.v(MyUtils.TAG, "MyTabActivity");
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         mViewPager = (ViewPager) view.findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -89,4 +85,5 @@ public class MyTabActivity extends Fragment {
             return null;
         }
     }
+
 }
