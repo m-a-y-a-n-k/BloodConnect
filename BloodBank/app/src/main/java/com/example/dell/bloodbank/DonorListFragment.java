@@ -147,7 +147,7 @@ public class DonorListFragment extends Fragment {
             BufferedReader reader = null;
             String donorJsonString = null;
             try {
-                String u="http://192.168.0.4:80/BloodConnect/blood_bank/appdata_sender.php";
+                String u="http://[your_ip_address]:[port_number]/BloodConnect/blood_bank/appdata_sender.php";
                 URL url = new URL(u);
 
                 urlConnection = (HttpURLConnection) url.openConnection();
