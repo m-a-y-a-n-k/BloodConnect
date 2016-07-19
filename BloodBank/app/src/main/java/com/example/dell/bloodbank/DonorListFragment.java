@@ -66,14 +66,11 @@ public class DonorListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_my_tab, container, false);
         type=getArguments().getString(ARG_SECTION_NUMBER);
-        Log.v(getTAG(), "onCreateView"+type);
-        Log.v(getTAG(), "onCreateView1");
+        Log.v(getTAG(), "onCreateView "+type);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Blood Donors");
 
         LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        Log.v(getTAG(), "onCreateView");
         recyclerView=(RecyclerView)rootView.findViewById(R.id.DonorList);
-        Log.v(getTAG(), "onCreateView");
         recyclerView.setLayoutManager(layoutManager);
 
         getData();
@@ -150,7 +147,7 @@ public class DonorListFragment extends Fragment {
             BufferedReader reader = null;
             String donorJsonString = null;
             try {
-                String u="http://[ipV4-address]:[port-number]/BloodConnect/blood_bank/appdata_sender.php";
+                String u="http://192.168.0.4:80/BloodConnect/blood_bank/appdata_sender.php";
                 URL url = new URL(u);
 
                 urlConnection = (HttpURLConnection) url.openConnection();
