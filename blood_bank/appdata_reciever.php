@@ -3,12 +3,13 @@
 ?>
 
 <?php
+	require_once("includes/form_functions.php");
 	require_once("includes/functions.php");
 ?>
 
 <?php
 	if( $_POST ) {
-		save_data_from_app();
+		echo save_data_from_app();
 		echo "Data Saved";
 	}
 	else {
