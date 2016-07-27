@@ -73,6 +73,7 @@ public class DonorListFragment extends Fragment {
         recyclerView=(RecyclerView)rootView.findViewById(R.id.DonorList);
         recyclerView.setLayoutManager(layoutManager);
 
+
         getData();
 
         donorCustomAdapter=new DonorCustomAdapter(donorList, getActivity());
@@ -147,7 +148,8 @@ public class DonorListFragment extends Fragment {
             BufferedReader reader = null;
             String donorJsonString = null;
             try {
-                String u="http://[your_ip_address]:[port_number]/BloodConnect/blood_bank/appdata_sender.php";
+                String u = MyUtils.BASE_URL + "appdata_sender.php";
+
                 URL url = new URL(u);
 
                 urlConnection = (HttpURLConnection) url.openConnection();

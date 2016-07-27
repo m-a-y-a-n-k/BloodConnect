@@ -2,6 +2,8 @@ package com.example.dell.bloodbank;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,14 +18,12 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
-
 public class RegisterDonor extends Fragment {
-
 
     //Enter url here
     private static final String KEY_NAME="userdetails.UserName",
             KEY_EMAIL="userdetails.UserEmail", NULL_VALUE="userdetails.nullValue";
-    private static final String REGISTER_URL = "http://[your_ip_address]:[port_number]/BloodConnect/blood_bank/appdata_reciever.php";
+    private static final String REGISTER_URL = MyUtils.BASE_URL + "appdata_reciever.php";
     EditText eName, eAge, eEmail, eCountry, eCity, eContact ;
     Spinner eType, eGender, eExp;
     Button register;
@@ -151,6 +151,7 @@ public class RegisterDonor extends Fragment {
                 Toast.makeText(getActivity().getApplicationContext(),s,Toast.LENGTH_LONG).show();
             }
         }
+
         RegisterAsyncTask ru=new RegisterAsyncTask();
         ru.execute();
     }
@@ -159,4 +160,5 @@ public class RegisterDonor extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
+
 }
